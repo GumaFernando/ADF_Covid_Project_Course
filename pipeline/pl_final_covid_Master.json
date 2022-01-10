@@ -1,0 +1,163 @@
+{
+	"name": "pl_final_covid_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "pl_ingestion_HTTP",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_ingest_ecdcs_data",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_ingestion_population",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_ingestion_HTTP",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_ingestion_population_data",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_ingestion_hospital_admissions",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_ingestion_population",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_process_hospital_admissions",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_process_caseDeaths",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_ingestion_hospital_admissions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_process_cases_deaths",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_process_population_Databricks",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_process_caseDeaths",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_process_population_data",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_save_synapse_casesDeaths",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_process_population_Databricks",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_saved_synapse_case_and_deaths",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_save_synapse_hospitalAdmissions",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_save_synapse_casesDeaths",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_saved_synapse_hospital_admissions",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_save_synapse_testing",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_save_synapse_hospitalAdmissions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_testing_synapse",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-01-10T13:00:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

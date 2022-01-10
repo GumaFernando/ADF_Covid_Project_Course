@@ -1,0 +1,32 @@
+{
+	"name": "dtflow_pipe2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "slink_brands",
+						"type": "DatasetReference"
+					},
+					"name": "origem"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "adls_trusted",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "alterNames"
+				}
+			],
+			"script": "source(output(\n\t\tcategory_name as string,\n\t\tbrand_name as string,\n\t\tprice_segment as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> origem\norigem select(mapColumn(\n\t\tcategoria = category_name,\n\t\tmarca = brand_name,\n\t\tsegmento = price_segment\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> alterNames\nalterNames sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['brands.csv'],\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

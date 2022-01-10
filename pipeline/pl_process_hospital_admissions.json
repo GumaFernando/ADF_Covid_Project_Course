@@ -1,0 +1,78 @@
+{
+	"name": "pl_process_hospital_admissions",
+	"properties": {
+		"description": "Weekly and Daily",
+		"activities": [
+			{
+				"name": "hospitalAdmissions",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "excluirhospitalAdmissions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_transform_hospital_admissions",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "excluirhospitalAdmissions",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_processed_hospital_admissions_daily_sink",
+						"type": "DatasetReference"
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "adlsv2",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logs-delete"
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"wildcardFileName": "*",
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "process"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-01-10T13:00:14Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "guma-datafactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "04c0f9b0-72d4-4206-a687-637c56cf22b8",
+		"tenantId": "85b8bead-7347-488d-9497-cbaa5c701fb3"
+	}
+}

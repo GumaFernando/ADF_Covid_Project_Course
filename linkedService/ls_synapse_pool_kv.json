@@ -1,0 +1,19 @@
+{
+	"name": "ls_synapse_pool_kv",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=synapseguma.sql.azuresynapse.net;Initial Catalog=poolsql1;User ID=guma",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "kv_guma",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "senhasynapse"
+			}
+		}
+	}
+}

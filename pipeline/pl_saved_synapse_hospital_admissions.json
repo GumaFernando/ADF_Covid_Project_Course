@@ -1,0 +1,142 @@
+{
+	"name": "pl_saved_synapse_hospital_admissions",
+	"properties": {
+		"activities": [
+			{
+				"name": "saveHospitalAdmissions",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "country",
+									"type": "String"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "country_code_2_digit",
+									"type": "String"
+								},
+								"sink": {
+									"name": "country_code_2_digit",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "country_code_3_digit",
+									"type": "String"
+								},
+								"sink": {
+									"name": "country_code_3_digit",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "population",
+									"type": "String"
+								},
+								"sink": {
+									"name": "population",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "reported_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "reported_date",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": " hospital occupancy_count",
+									"type": "String"
+								},
+								"sink": {
+									"name": "hospital_occupancy_count",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "icu_occupancy_count",
+									"type": "String"
+								},
+								"sink": {
+									"name": "icu_occupancy_count",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "source",
+									"type": "String"
+								},
+								"sink": {
+									"name": "source",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_processed_hospital_admissions_daily_sink",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_synapse_hospital_admissions",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "dw"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-01-10T13:00:14Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

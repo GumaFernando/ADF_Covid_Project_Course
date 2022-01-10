@@ -1,0 +1,11 @@
+{
+	"name": "kv_guma",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://guma-keyvalue.vault.azure.net/"
+		}
+	}
+}

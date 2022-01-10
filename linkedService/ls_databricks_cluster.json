@@ -1,0 +1,20 @@
+{
+	"name": "ls_databricks_cluster",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-6174584212989791.11.azuredatabricks.net",
+			"accessToken": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "kv_guma",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "dbTokenCovid"
+			},
+			"existingClusterId": "0107-130620-8r9zfyce"
+		}
+	}
+}
