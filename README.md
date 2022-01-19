@@ -11,7 +11,7 @@ https://www.udemy.com/course/learn-azure-data-factory-from-scratch/learn/lecture
 
 ### Transformação dos dados Servidor Web (Cases & Deaths)
 
-![alt text](https://github.com/GumaFernando/ADF_Covid_Project_Course/blob/main/cases_confirmed_power_bi.png)
+![alt text](https://github.com/GumaFernando/ADF_Covid_Project_Course/blob/main/curso_udemy_df_cases.png)
 
 
 ### Transformação dos dados Blob ( Hospital Admissions )
